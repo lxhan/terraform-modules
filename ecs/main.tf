@@ -27,16 +27,6 @@ resource "aws_ecs_task_definition" "main" {
     "image": "${aws_ecr_repository.main.repository_url}",
     "name": "${var.project_name}-${var.environment}-container",
     "networkMode": "awsvpc",
-    "healthCheck": {
-      "retries": 3,
-      "command": [
-          "CMD-SHELL",
-          "curl -f http://localhost:${var.app_port}/${var.health_check_path} || exit 1"
-      ],
-      "timeout": 5,
-      "interval": 5,
-      "startPeriod": null
-    },
     "portMappings": [
       {
         "containerPort": ${var.app_port},

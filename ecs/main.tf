@@ -25,7 +25,7 @@ resource "aws_ecs_task_definition" "main" {
     "cpu": ${var.task_cpu},
     "memory": ${var.task_memory},
     "image": "${aws_ecr_repository.main.repository_url}",
-    "name": "${var.project_name}-${var.environment}",
+    "name": "${var.project_name}-${var.environment}-container",
     "networkMode": "awsvpc",
     "healthCheck": {
       "retries": 3,

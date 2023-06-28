@@ -51,7 +51,7 @@ resource "aws_ecs_task_definition" "main" {
           "awslogs-region": "${var.aws_region}",
           "awslogs-stream-prefix": "ecs"
         }
-    },
+    }
   }
 ]
 DEFINITION

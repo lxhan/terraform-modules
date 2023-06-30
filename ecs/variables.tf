@@ -28,6 +28,16 @@ variable "app_count" {
   default = 1
 }
 
+variable "app_min_count" {
+  type    = number
+  default = 1
+}
+
+variable "app_max_count" {
+  type    = number
+  default = 4
+}
+
 variable "az_count" {
   type    = string
   default = 4

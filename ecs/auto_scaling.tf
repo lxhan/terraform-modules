@@ -2,8 +2,8 @@ resource "aws_appautoscaling_target" "main" {
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.main.name}"
   scalable_dimension = "ecs:service:DesiredCount"
-  min_capacity       = 1
-  max_capacity       = 3
+  min_capacity       = var.app_min_count
+  max_capacity       = var.app_max_count
   tags               = merge(local.tags, { Name = "${title(var.project_name)} AS Target" })
 }
 

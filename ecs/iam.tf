@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "ecs_task_assume_role_data" {
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "${var.project_name}-ecs-exec-role"
+  name               = "${var.project_name}-${var.environment}-ecs-exec-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role_data.json
   tags               = merge(local.tags, { Name = "${title(var.project_name)} IAM Role" })
 }
@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_data" {
 }
 
 resource "aws_iam_policy" "ecs_task_execution_policy" {
-  name   = "${var.project_name}-ecs-task-exec-policy"
+  name   = "${var.project_name}-${var.environment}-ecs-task-exec-policy"
   policy = data.aws_iam_policy_document.ecs_task_execution_role_data.json
   tags   = merge(local.tags, { Name = "${title(var.project_name)} IAM Policy" })
 }
@@ -62,7 +62,7 @@ data "aws_iam_policy_document" "task_role_data" {
 }
 
 resource "aws_iam_role" "task_role" {
-  name               = "${var.project_name}-ecs-task-role"
+  name               = "${var.project_name}-${var.environment}-ecs-task-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role_data.json
   tags               = merge(local.tags, { Name = "${title(var.project_name)} IAM Role" })
 }
@@ -96,7 +96,7 @@ data "aws_iam_policy_document" "codepipeline_assume_role" {
 }
 
 resource "aws_iam_role" "codepipeline_role" {
-  name               = "${var.project_name}-codepipeline-role"
+  name               = "${var.project_name}-${var.environment}-codepipeline-role"
   assume_role_policy = data.aws_iam_policy_document.codepipeline_assume_role.json
   tags               = merge(local.tags, { Name = "${title(var.project_name)} IAM Role" })
 }
@@ -156,7 +156,7 @@ data "aws_iam_policy_document" "codepipeline_policy_data" {
 }
 
 resource "aws_iam_policy" "codepipeline_policy" {
-  name   = "${var.project_name}-codepipeline-policy"
+  name   = "${var.project_name}-${var.environment}-codepipeline-policy"
   policy = data.aws_iam_policy_document.codepipeline_policy_data.json
 }
 
@@ -210,13 +210,13 @@ data "aws_iam_policy_document" "code_deploy_policy_data" {
 }
 
 resource "aws_iam_role" "code_deploy_role" {
-  name               = "${var.project_name}-code-deploy-role"
+  name               = "${var.project_name}-${var-environment}-code-deploy-role"
   assume_role_policy = data.aws_iam_policy_document.code_deploy_assume_role_data.json
   tags               = merge(local.tags, { Name = "${title(var.project_name)} IAM Role" })
 }
 
 resource "aws_iam_policy" "code_deploy_policy" {
-  name   = "${var.project_name}-code_deploy_policy"
+  name   = "${var.project_name}-${var.environment}-code_deploy_policy"
   policy = data.aws_iam_policy_document.code_deploy_policy_data.json
 }
 

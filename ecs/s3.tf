@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "codepipeline" {
-  bucket = "${var.project_name}-codepipeline"
+  bucket = "${var.project_name}-${var.environment}-codepipeline"
   tags   = merge(local.tags, { Name = "${title(var.project_name)} S3 Bucket" })
 }
 

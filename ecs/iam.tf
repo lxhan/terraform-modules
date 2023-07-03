@@ -210,7 +210,7 @@ data "aws_iam_policy_document" "code_deploy_policy_data" {
 }
 
 resource "aws_iam_role" "code_deploy_role" {
-  name               = "${var.project_name}-${var-environment}-code-deploy-role"
+  name               = "${var.project_name}-${var.environment}-code-deploy-role"
   assume_role_policy = data.aws_iam_policy_document.code_deploy_assume_role_data.json
   tags               = merge(local.tags, { Name = "${title(var.project_name)} IAM Role" })
 }

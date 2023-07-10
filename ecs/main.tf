@@ -49,11 +49,12 @@ DEFINITION
 }
 
 resource "aws_ecs_service" "main" {
-  name            = "${var.project_name}-${var.environment}-service"
-  cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.main.arn
-  desired_count   = var.app_count
-  launch_type     = "FARGATE"
+  name                              = "${var.project_name}-${var.environment}-service"
+  cluster                           = aws_ecs_cluster.main.id
+  task_definition                   = aws_ecs_task_definition.main.arn
+  desired_count                     = var.app_count
+  launch_type                       = "FARGATE"
+  health_check_grace_period_seconds = var.health_check_grace_period_seconds
 
   deployment_controller {
     type = "CODE_DEPLOY"

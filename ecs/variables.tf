@@ -53,6 +53,11 @@ variable "health_check_path" {
   default = "/api/health"
 }
 
+variable "health_check_grace_period_seconds" {
+  type    = number
+  default = 300
+}
+
 variable "task_cpu" {
   type    = number
   default = 256

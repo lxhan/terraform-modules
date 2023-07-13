@@ -58,6 +58,11 @@ variable "health_check_grace_period_seconds" {
   default = 300
 }
 
+variable "termination_wait_time_in_minutes" {
+  type    = number
+  default = 5
+}
+
 variable "task_cpu" {
   type    = number
   default = 256

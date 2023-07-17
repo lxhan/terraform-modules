@@ -6,14 +6,6 @@ locals {
   }
 }
 
-provider "aws" {
-  shared_credentials_files = ["~/.aws/credentials"]
-  shared_config_files      = ["~/.aws/config"]
-  profile                  = "habsida"
-  region                   = "ap-northeast-2"
-}
-
-
 resource "aws_ecs_cluster" "main" {
   name = "${var.project_name}-${var.environment}-cluster"
   tags = merge(local.tags, { Name = "${title(var.project_name)} ECS Cluster" })

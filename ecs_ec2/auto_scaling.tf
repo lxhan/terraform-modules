@@ -1,10 +1,11 @@
 resource "aws_launch_configuration" "main" {
-  name                 = "${var.project_name}-${var.environment}-asg-launch-config"
-  image_id             = var.ami
-  instance_type        = var.instance_type
-  security_groups      = ["${aws_security_group.ecs_sg.id}"]
-  iam_instance_profile = aws_iam_instance_profile.ecs_agent.name
-  user_data            = "#!/bin/bash\necho ECS_CLUSTER=${aws_ecs_cluster.main.name} > /etc/ecs/ecs.config"
+  name                        = "${var.project_name}-${var.environment}-asg-launch-config"
+  image_id                    = var.ami
+  instance_type               = var.instance_type
+  security_groups             = ["${aws_security_group.ecs_sg.id}"]
+  iam_instance_profile        = aws_iam_instance_profile.ecs_agent.name
+  associate_public_ip_address = true
+  user_data                   = "#!/bin/bash\necho ECS_CLUSTER=${aws_ecs_cluster.main.name} > /etc/ecs/ecs.config"
 }
 
 resource "aws_autoscaling_group" "main" {

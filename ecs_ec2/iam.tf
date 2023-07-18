@@ -18,17 +18,6 @@ resource "aws_iam_role" "ecs_agent" {
   assume_role_policy = data.aws_iam_policy_document.ecs_agent.json
 }
 
-resource "aws_iam_policy" "ecs_agent_policy" {
-  name   = "${var.project_name}-${var.environment}-ecs-agent-policy"
-  policy = data.aws_iam_policy_document.ecs_agent.json
-  tags   = merge(local.tags, { Name = "${title(var.project_name)} IAM Policy" })
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_agent" {
-  role       = aws_iam_role.ecs_agent.name
-  policy_arn = aws_iam_policy.ecs_agent_policy.arn
-}
-
 resource "aws_iam_instance_profile" "ecs_agent" {
   name = "${var.project_name}-${var.environment}-ecs-agent-profile"
   role = aws_iam_role.ecs_agent.name

@@ -6,8 +6,9 @@ resource "aws_launch_template" "main" {
   iam_instance_profile {
     name = aws_iam_instance_profile.ecs_agent.name
   }
-  user_data = base64encode("#!/bin/bash\necho ECS_CLUSTER=${aws_ecs_cluster.main.name} > /etc/ecs/ecs.config")
-  tags      = merge(local.tags, { Name = "${title(var.project_name)} Launch Template" })
+  user_data  = base64encode("#!/bin/bash\necho ECS_CLUSTER=${aws_ecs_cluster.main.name} > /etc/ecs/ecs.config")
+  depends_on = [aws_security_group.lb_sg, aws_iam_instance_profile.ecs_agent]
+  tags       = merge(local.tags, { Name = "${title(var.project_name)} Launch Template" })
 }
 
 resource "aws_autoscaling_group" "main" {
@@ -21,5 +22,6 @@ resource "aws_autoscaling_group" "main" {
     id      = aws_launch_template.main.id
     version = "$Latest"
   }
+  depends_on = [aws_subnet.public]
 }
 

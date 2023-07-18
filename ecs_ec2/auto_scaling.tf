@@ -10,6 +10,7 @@ resource "aws_launch_configuration" "main" {
 
 resource "aws_autoscaling_group" "main" {
   name                      = "${var.project_name}-${var.environment}-asg"
+  vpc_zone_identifier       = aws_subnet.public.*.id
   availability_zones        = var.availability_zones
   launch_configuration      = aws_launch_configuration.main.name
   min_size                  = var.app_min_count

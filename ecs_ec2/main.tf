@@ -55,12 +55,6 @@ resource "aws_ecs_service" "main" {
     type = "CODE_DEPLOY"
   }
 
-  network_configuration {
-    security_groups  = [aws_security_group.ecs_sg.id]
-    subnets          = aws_subnet.private.*.id
-    assign_public_ip = true
-  }
-
   load_balancer {
     target_group_arn = aws_alb_target_group.main.1.arn
     container_name   = "${var.project_name}-${var.environment}-container"

@@ -1,5 +1,5 @@
 resource "aws_launch_template" "main" {
-  name_prefix            = "${var.project_name}-${var.environment}-asg-launch-config"
+  name_prefix            = "${var.project_name}-${var.environment}-"
   vpc_security_group_ids = [aws_security_group.ecs_sg.id, aws_security_group.lb_sg.id]
   image_id               = var.ami
   instance_type          = var.instance_type
@@ -25,3 +25,18 @@ resource "aws_autoscaling_group" "main" {
   depends_on = [aws_subnet.public]
 }
 
+resource "aws_autoscaling_policy" "scale_down" {
+  name                   = "${var.project_name}-${var.environment}-asg-scale-down"
+  autoscaling_group_name = aws_autoscaling_group.main.name
+  adjustment_type        = "ChangeInCapacity"
+  scaling_adjustment     = -1
+  cooldown               = 120
+}
+
+resource "aws_autoscaling_policy" "scale_up" {
+  name                   = "${var.project_name}-${var.environment}-asg-scale-up"
+  autoscaling_group_name = aws_autoscaling_group.main.name
+  adjustment_type        = "ChangeInCapacity"
+  scaling_adjustment     = 1
+  cooldown               = 120
+}

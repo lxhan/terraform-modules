@@ -21,6 +21,5 @@ resource "aws_autoscaling_group" "main" {
     id      = aws_launch_template.main.id
     version = "$Latest"
   }
-  tags = merge(local.tags, { Name = "${title(var.project_name)} ASG" })
 }
 

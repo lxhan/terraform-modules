@@ -2,7 +2,7 @@ resource "aws_launch_template" "main" {
   name_prefix          = "${var.project_name}-${var.environment}-asg-launch-config"
   image_id             = var.ami
   instance_type        = var.instance_type
-  security_group_names = [aws.aws_security_group.lb_sg.name]
+  security_group_names = [aws_security_group.lb_sg.name]
   iam_instance_profile {
     name = aws_iam_instance_profile.ecs_agent.name
   }

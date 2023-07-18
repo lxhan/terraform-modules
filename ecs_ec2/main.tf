@@ -16,6 +16,7 @@ resource "aws_ecs_task_definition" "main" {
   family                   = "${var.project_name}-${var.environment}-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["EC2"]
+  memory                   = var.task_memory
   container_definitions    = <<DEFINITION
 [
   {

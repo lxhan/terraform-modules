@@ -45,7 +45,7 @@ variable "az_count" {
 
 variable "availability_zones" {
   type    = list(string)
-  default = ["ap-northeast-2a,ap-northeast-2b,ap-northeast-2c,ap-northeast-2d"]
+  default = ["ap-northeast-2a", "ap-northeast-2b", "ap-northeast-2c", "ap-northeast-2d"]
 }
 
 variable "allow_all_cidr" {
@@ -75,7 +75,7 @@ variable "task_cpu" {
 
 variable "task_memory" {
   type    = number
-  default = 512
+  default = 1024
 }
 
 variable "instance_type" {

@@ -11,8 +11,7 @@ resource "aws_codedeploy_deployment_group" "main" {
   service_role_arn       = aws_iam_role.code_deploy_role.arn
 
   auto_rollback_configuration {
-    enabled = true
-    events  = ["DEPLOYMENT_FAILURE"]
+    enabled = false
   }
 
   blue_green_deployment_config {
@@ -45,11 +44,11 @@ resource "aws_codedeploy_deployment_group" "main" {
         name = aws_alb_target_group.main.*.name[1]
       }
       prod_traffic_route {
-        listener_arns = [aws_alb_listener.main.arn]
+        listener_arns = [aws_alb_listener.prod.arn]
       }
-      # test_traffic_route {
-      #   listener_arns = [aws_alb_listener.app_listener.arn]
-      # }
+      test_traffic_route {
+        listener_arns = [aws_alb_listener.test.arn]
+      }
     }
   }
 

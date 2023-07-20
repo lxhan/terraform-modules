@@ -1,6 +1,5 @@
 locals {
   target_groups = ["blue", "green"]
-  host_name     = "*.${var.aws_region}.elb.amazonaws.com"
 }
 
 resource "aws_alb" "main" {
@@ -15,7 +14,7 @@ resource "aws_alb_target_group" "main" {
   name  = "${var.project_name}-${var.environment}-tg-${element(local.target_groups, count.index)}"
   tags  = merge(local.tags, { Name = "${title(var.project_name)} Target Group" })
 
-  port        = 80
+  port        = 443
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
@@ -34,28 +33,41 @@ resource "aws_alb_listener" "main" {
   tags              = merge(local.tags, { Name = "${title(var.project_name)} Listener" })
 
   default_action {
-    type = "forward"
-    forward {
-      target_group {
-        arn = aws_alb_target_group.main.1.arn
-      }
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
     }
   }
 }
 
-resource "aws_alb_listener_rule" "main" {
-  count        = length(local.target_groups)
-  listener_arn = aws_alb_listener.main.arn
-  tags         = merge(local.tags, { Name = "${title(var.project_name)} Listener Rule" })
+resource "aws_alb_listener" "prod" {
+  load_balancer_arn = aws_alb.main.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = var.ssl_policy
+  certificate_arn   = var.certificate_arn
+  tags              = merge(local.tags, { Name = "${title(var.project_name)} Listener" })
 
-  action {
+  default_action {
     type             = "forward"
     target_group_arn = aws_alb_target_group.main.1.arn
   }
+}
 
-  condition {
-    host_header {
-      values = [local.host_name]
-    }
+
+resource "aws_alb_listener" "test" {
+  load_balancer_arn = aws_alb.main.arn
+  port              = 8443
+  protocol          = "HTTPS"
+  ssl_policy        = var.ssl_policy
+  certificate_arn   = var.certificate_arn
+  tags              = merge(local.tags, { Name = "${title(var.project_name)} Listener" })
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.main.1.arn
   }
 }

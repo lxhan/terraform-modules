@@ -22,7 +22,7 @@ resource "aws_codepipeline" "main" {
       configuration = {
         S3Bucket             = aws_s3_bucket.codepipeline.bucket
         S3ObjectKey          = "artifact.zip"
-        PollForSourceChanges = false
+        PollForSourceChanges = true
       }
     }
 

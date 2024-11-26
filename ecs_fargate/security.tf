@@ -60,3 +60,26 @@ resource "aws_security_group" "ecs_sg" {
   }
   tags = merge(local.tags, { Name = "${title(var.project_name)} Security Group" })
 }
+
+resource "aws_security_group" "rds_sg" {
+  count       = var.create_db ? 1 : 0
+  name        = "${var.project_name}-rds-sg"
+  description = "Security group for RDS"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 5432
+    to_port     = 5432
+    cidr_blocks = [var.allow_all_cidr]
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = [var.allow_all_cidr]
+  }
+
+  tags = merge(local.tags, { Name = "${title(var.project_name)} RDS Security Group" })
+}

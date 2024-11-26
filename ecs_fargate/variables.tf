@@ -80,5 +80,45 @@ variable "ssl_policy" {
 
 variable "certificate_arn" {
   type    = string
-  default = "arn:aws:acm:ap-northeast-2:847821753997:certificate/68080cd3-3179-4637-9e8b-1b8e10687ad8"
+  default = ""
+}
+
+variable "create_db" {
+  type    = bool
+  default = false
+}
+
+variable "db_name" {
+  type    = string
+  default = ""
+}
+
+variable "db_engine" {
+  type    = string
+  default = "postgres"
+}
+
+variable "db_engine_version" {
+  type    = string
+  default = "16"
+}
+
+variable "db_instance_class" {
+  type    = string
+  default = "db.t3.micro"
+}
+
+variable "db_username" {
+  type    = string
+  default = ""
+}
+
+variable "db_password" {
+  type    = string
+  default = ""
+}
+
+variable "db_storage" {
+  type    = number
+  default = 20
 }

@@ -1,3 +1,9 @@
+resource "aws_db_subnet_group" "main" {
+  name       = "${var.project_name}-${var.environment}-db-subnet-group"
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = aws_subnet.public[*].id
+}
+
 resource "aws_db_instance" "main" {
   count                       = var.create_db ? 1 : 0
   identifier                  = "${var.project_name}-${var.environment}-db"

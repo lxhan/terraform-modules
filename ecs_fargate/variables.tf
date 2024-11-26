@@ -122,3 +122,8 @@ variable "db_storage" {
   type    = number
   default = 20
 }
+
+variable "create_secret_manager" {
+  type    = bool
+  default = false
+}

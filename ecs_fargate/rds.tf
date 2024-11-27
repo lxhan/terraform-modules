@@ -2,6 +2,9 @@ resource "aws_db_subnet_group" "main" {
   name       = "${var.project_name}-${var.environment}-db-subnet-group"
   vpc_id     = aws_vpc.main.id
   subnet_ids = aws_subnet.public[*].id
+  depends_on = [aws_vpc.main]
+
+  tags = merge(local.tags, { Name = "${title(var.project_name)} RDS Subnet Group" })
 }
 
 resource "aws_db_instance" "main" {

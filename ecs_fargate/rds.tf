@@ -15,10 +15,9 @@ resource "aws_db_instance" "main" {
   engine_version              = var.db_engine_version
   instance_class              = var.db_instance_class
   username                    = var.db_username
-  password                    = var.db_password
+  manage_master_user_password = true
   parameter_group_name        = "default.${var.db_engine}${var.db_engine_version}"
   skip_final_snapshot         = true
-  manage_master_user_password = true
   multi_az                    = false
   publicly_accessible         = true
 

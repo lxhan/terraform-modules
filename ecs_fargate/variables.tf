@@ -122,3 +122,8 @@ variable "create_secret_manager" {
   type    = bool
   default = false
 }
+
+variable "use_efs_volume" {
+  type    = bool
+  default = false
+}

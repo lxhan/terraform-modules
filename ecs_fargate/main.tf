@@ -19,7 +19,19 @@ resource "aws_ecs_task_definition" "main" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.task_cpu
   memory                   = var.task_memory
-  container_definitions    = <<DEFINITION
+
+  dynamic "volume" {
+    for_each = var.use_efs_volume ? [1] : []
+    content {
+      name = "efs-volume"
+      efs_volume_configuration {
+        file_system_id = aws_efs_file_system.main.id
+        root_directory = "/efs"
+      }
+    }
+  }
+
+  container_definitions = <<DEFINITION
 [
   {
     "cpu": ${var.task_cpu},
@@ -45,7 +57,7 @@ resource "aws_ecs_task_definition" "main" {
   }
 ]
 DEFINITION
-  tags                     = merge(local.tags, { Name = "${title(var.project_name)} ECS Task Definition" })
+  tags                  = merge(local.tags, { Name = "${title(var.project_name)} ECS Task Definition" })
 }
 
 resource "aws_ecs_service" "main" {

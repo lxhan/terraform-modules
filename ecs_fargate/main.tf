@@ -25,7 +25,7 @@ resource "aws_ecs_task_definition" "main" {
     content {
       name = "efs-volume"
       efs_volume_configuration {
-        file_system_id = aws_efs_file_system.main.id
+        file_system_id = aws_efs_file_system.main[0].id
         root_directory = "/efs"
       }
     }

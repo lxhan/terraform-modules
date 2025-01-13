@@ -11,18 +11,18 @@ resource "aws_vpc" "main" {
 
 resource "aws_subnet" "public" {
   count                   = var.create_vpc ? var.az_count : 0
-  cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 4, var.az_count + count.index)
-  availability_zone       = data.aws_availability_zones.available.names[count.index]
-  vpc_id                  = aws_vpc.main.id
+  cidr_block              = cidrsubnet(aws_vpc.main[0].cidr_block, 4, var.az_count + count.index)
+  availability_zone       = data.aws_availability_zones.available[0].names[count.index]
+  vpc_id                  = aws_vpc.main[0].id
   map_public_ip_on_launch = true
   tags                    = merge(local.tags, { Name = "${title(var.project_name)} Public Subnet" })
 }
 
 resource "aws_subnet" "private" {
   count             = var.create_vpc ? var.az_count : 0
-  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 4, count.index)
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main[0].cidr_block, 4, count.index)
+  availability_zone = data.aws_availability_zones.available[0].names[count.index]
+  vpc_id            = aws_vpc.main[0].id
   tags              = merge(local.tags, { Name = "${title(var.project_name)} Private Subnet" })
 }
 

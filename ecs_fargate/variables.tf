@@ -123,7 +123,22 @@ variable "create_secret_manager" {
   default = false
 }
 
-variable "use_efs_volume" {
+variable "create_efs" {
   type    = bool
   default = false
+}
+
+variable "create_vpc" {
+  type    = bool
+  default = false
+}
+
+variable "vpc_id" {
+  type    = string
+  default = ""
+}
+
+variable "public_subnets" {
+  type    = list(string)
+  default = []
 }

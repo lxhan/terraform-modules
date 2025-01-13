@@ -4,7 +4,7 @@ locals {
 
 resource "aws_alb" "main" {
   name            = "${var.project_name}-${var.environment}-alb"
-  subnets         = aws_subnet.public.*.id
+  subnets         = var.create_vpc ? aws_subnet.public.*.id : var.public_subnets
   security_groups = [aws_security_group.lb_sg.id]
   tags            = merge(local.tags, { Name = "${title(var.project_name)} ALB" })
 }
@@ -16,7 +16,7 @@ resource "aws_alb_target_group" "main" {
 
   port        = 443
   protocol    = "HTTP"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.create_vpc ? aws_vpc.main[0].id : var.vpc_id
   target_type = "ip"
 
   health_check {

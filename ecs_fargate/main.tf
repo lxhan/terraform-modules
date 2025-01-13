@@ -21,7 +21,7 @@ resource "aws_ecs_task_definition" "main" {
   memory                   = var.task_memory
 
   dynamic "volume" {
-    for_each = var.use_efs_volume ? [1] : []
+    for_each = var.create_efs ? [1] : []
     content {
       name = "efs-volume"
       efs_volume_configuration {

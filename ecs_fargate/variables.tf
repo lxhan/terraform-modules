@@ -123,11 +123,6 @@ variable "create_secret_manager" {
   default = false
 }
 
-variable "az_name" {
-  type    = string
-  default = "ap-northeast-2a"
-}
-
 variable "create_efs" {
   type    = bool
   default = false
@@ -151,4 +146,9 @@ variable "public_subnets" {
 variable "private_subnets" {
   type    = list(string)
   default = []
+}
+
+variable "efs_az_name" {
+  type    = string
+  default = "ap-northeast-2a"
 }

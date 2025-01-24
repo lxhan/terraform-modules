@@ -2,7 +2,7 @@ resource "aws_efs_file_system" "main" {
   count                  = var.create_efs ? 1 : 0
   creation_token         = "${var.project_name}-${var.environment}-efs"
   encrypted              = true
-  availability_zone_name = var.az_name
+  availability_zone_name = var.efs_az_name
 
   tags = merge(local.tags, { Name = "${title(var.project_name)} EFS" })
 }

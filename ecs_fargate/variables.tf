@@ -152,3 +152,8 @@ variable "efs_az_name" {
   type    = string
   default = "ap-northeast-2a"
 }
+
+variable "cpu_architecture" {
+  type    = string
+  default = "X86_64"
+}

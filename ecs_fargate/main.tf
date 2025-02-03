@@ -39,6 +39,10 @@ resource "aws_ecs_task_definition" "main" {
     "image": "${aws_ecr_repository.main.repository_url}",
     "name": "${var.project_name}-${var.environment}-container",
     "networkMode": "awsvpc",
+    "runtimePlatform": {
+      "operatingSystemFamily": "LINUX",
+      "cpuArchitecture": "${var.cpu_architecture}"
+    },
     "portMappings": [
       {
         "containerPort": ${var.app_port},

@@ -8,9 +8,10 @@ resource "aws_efs_file_system" "main" {
 }
 
 resource "aws_efs_mount_target" "main" {
-  count          = var.create_efs ? 1 : 0
-  file_system_id = aws_efs_file_system.main[0].id
-  subnet_id      = var.create_vpc ? aws_subnet.public[0].id : var.public_subnets[0]
+  count           = var.create_efs ? 1 : 0
+  file_system_id  = aws_efs_file_system.main[0].id
+  subnet_id       = var.create_vpc ? aws_subnet.public[0].id : var.public_subnets[0]
+  security_groups = [aws_security_group.efs_sg[0].id]
 }
 
 resource "aws_efs_backup_policy" "policy" {

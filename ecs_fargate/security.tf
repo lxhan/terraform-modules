@@ -37,7 +37,7 @@ resource "aws_security_group" "lb_sg" {
     to_port     = 0
     cidr_blocks = [var.allow_all_cidr]
   }
-  tags = merge(local.tags, { Name = "${title(var.project_name)} Security Group" })
+  tags = merge(local.tags, { Name = "${title(var.project_name)} ALB Security Group" })
 }
 
 resource "aws_security_group" "ecs_sg" {
@@ -59,7 +59,7 @@ resource "aws_security_group" "ecs_sg" {
     cidr_blocks = [var.allow_all_cidr]
   }
 
-  tags = merge(local.tags, { Name = "${title(var.project_name)} Security Group" })
+  tags = merge(local.tags, { Name = "${title(var.project_name)} ECS Security Group" })
 }
 
 resource "aws_security_group" "rds_sg" {
@@ -109,14 +109,4 @@ resource "aws_security_group_rule" "efs_ingress_from_ecs" {
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.ecs_sg.id
   security_group_id        = aws_security_group.efs_sg[0].id
-}
-
-resource "aws_security_group_rule" "ecs_egress_to_efs" {
-  count                    = var.create_efs ? 1 : 0
-  type                     = "egress"
-  from_port                = 2049
-  to_port                  = 2049
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.efs_sg[0].id
-  security_group_id        = aws_security_group.ecs_sg.id
 }

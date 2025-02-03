@@ -59,16 +59,6 @@ resource "aws_security_group" "ecs_sg" {
     cidr_blocks = [var.allow_all_cidr]
   }
 
-  dynamic "egress" {
-    for_each = var.create_efs ? [1] : []
-    content {
-      protocol        = "tcp"
-      from_port       = 2049
-      to_port         = 2049
-      security_groups = [aws_security_group.efs_sg.id]
-    }
-  }
-
   tags = merge(local.tags, { Name = "${title(var.project_name)} Security Group" })
 }
 
@@ -101,13 +91,6 @@ resource "aws_security_group" "efs_sg" {
   description = "Security group for EFS"
   vpc_id      = var.create_vpc ? aws_vpc.main[0].id : var.vpc_id
 
-  ingress {
-    protocol        = "tcp"
-    from_port       = 2049
-    to_port         = 2049
-    security_groups = [aws_security_group.ecs_sg.id]
-  }
-
   egress {
     protocol    = "-1"
     from_port   = 0
@@ -116,4 +99,24 @@ resource "aws_security_group" "efs_sg" {
   }
 
   tags = merge(local.tags, { Name = "${title(var.project_name)} EFS Security Group" })
+}
+
+resource "aws_security_group_rule" "efs_ingress_from_ecs" {
+  count                    = var.create_efs ? 1 : 0
+  type                     = "ingress"
+  from_port                = 2049
+  to_port                  = 2049
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.ecs_sg.id
+  security_group_id        = aws_security_group.efs_sg[0].id
+}
+
+resource "aws_security_group_rule" "ecs_egress_to_efs" {
+  count                    = var.create_efs ? 1 : 0
+  type                     = "egress"
+  from_port                = 2049
+  to_port                  = 2049
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.efs_sg[0].id
+  security_group_id        = aws_security_group.ecs_sg.id
 }

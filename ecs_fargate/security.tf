@@ -1,5 +1,5 @@
 resource "aws_security_group" "lb_sg" {
-  name        = "${var.project_name}-lb-sg"
+  name        = "${var.project_name}-${var.environment}-lb-sg"
   description = "Security group for ALB"
   vpc_id      = var.create_vpc ? aws_vpc.main[0].id : var.vpc_id
 
@@ -41,7 +41,7 @@ resource "aws_security_group" "lb_sg" {
 }
 
 resource "aws_security_group" "ecs_sg" {
-  name        = "${var.project_name}-ecs-sg"
+  name        = "${var.project_name}-${var.environment}-ecs-sg"
   description = "Allows inbound traffic from ALB"
   vpc_id      = var.create_vpc ? aws_vpc.main[0].id : var.vpc_id
 
@@ -64,7 +64,7 @@ resource "aws_security_group" "ecs_sg" {
 
 resource "aws_security_group" "rds_sg" {
   count       = var.create_db ? 1 : 0
-  name        = "${var.project_name}-rds-sg"
+  name        = "${var.project_name}-${var.environment}-rds-sg"
   description = "Security group for RDS"
   vpc_id      = var.create_vpc ? aws_vpc.main[0].id : var.vpc_id
 
@@ -87,7 +87,7 @@ resource "aws_security_group" "rds_sg" {
 
 resource "aws_security_group" "efs_sg" {
   count       = var.create_efs ? 1 : 0
-  name        = "${var.project_name}-efs-sg"
+  name        = "${var.project_name}-${var.environment}-efs-sg"
   description = "Security group for EFS"
   vpc_id      = var.create_vpc ? aws_vpc.main[0].id : var.vpc_id
 
